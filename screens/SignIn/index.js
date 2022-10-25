@@ -15,6 +15,7 @@ import Btns from "../../src/btn";
 import Ips from "../../src/input";
 import Ipspass from "../../src/inputpass";
 import Logos from "../../src/logo";
+import axios from "axios";
 import Btnback from "../../src/btnback";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -33,22 +34,35 @@ export default function SignInScreen({ navigation }) {
     }
   };
   const login = async () => {
-    let userData = await AsyncStorage.getItem("userData");
-    if (userData) {
-      userData = JSON.parse(userData);
-      let arr = [...userData];
-      arr = arr.filter(
-        (value) =>
-          value.Email.toLocaleLowerCase() == Email.toLocaleLowerCase() &&
-          value.password == password
+    //   let userData = await AsyncStorage.getItem("userData");
+    //   if (userData) {
+    //     userData = JSON.parse(userData);
+    //     let arr = [...userData];
+    //     arr = arr.filter(
+    //       (value) =>
+    //         value.Email.toLocaleLowerCase() == Email.toLocaleLowerCase() &&
+    //         value.password == password
+    //     );
+    //     if (arr.length > 0) {
+    //       let curUser = arr[0];
+    //       AsyncStorage.setItem("curUser", JSON.stringify(curUser));
+    //       navigation.navigate("Home");
+    //     } else alert("Email hoặc mật khẩu không chính xác!");
+    //   } else {
+    //     alert("Email hoặc mật khẩu không chính xác!");
+    //   }
+    // };
+    try {
+      const res = await axios.get(
+        `http://192.168.43.132:3000/user/${Email.trim()}`
       );
-      if (arr.length > 0) {
-        let curUser = arr[0];
-        AsyncStorage.setItem("curUser", JSON.stringify(curUser));
+      if (res.data.password == password.trim()) {
         navigation.navigate("Home");
-      } else alert("Email hoặc mật khẩu không chính xác!");
-    } else {
-      alert("Email hoặc mật khẩu không chính xác!");
+      } else {
+        alert(`Email hoặc mật khẩu không chính xác!`);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   const goToSignUp = async () => {

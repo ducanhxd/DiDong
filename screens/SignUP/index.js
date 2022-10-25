@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import Btns from "../../src/btn";
 import Ips from "../../src/input";
 import Ipspass from "../../src/inputpass";
+import axios from "axios";
 import Logos from "../../src/logo";
 import Btnback from "../../src/btnback";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -40,36 +41,57 @@ export default function SignInScreen({ navigation }) {
     }
   };
   const createAccount = async () => {
-    let userData = await AsyncStorage.getItem("userData");
-    if (userData) {
-      userData = JSON.parse(userData);
-      let arr = [...userData];
-      arr = arr.filter(
-        (value) => value.Email.toLocaleLowerCase() == Email.toLocaleLowerCase()
+    //   let userData = await AsyncStorage.getItem("userData");
+    //   if (userData) {
+    //     userData = JSON.parse(userData);
+    //     let arr = [...userData];
+    //     arr = arr.filter(
+    //       (value) => value.Email.toLocaleLowerCase() == Email.toLocaleLowerCase()
+    //     );
+    //     if (arr.length > 0) {
+    //       alert("Email already registered!");
+    //       return;
+    //     } else {
+    //       userData.push({
+    //         Name: Name.trim(),
+    //         Email: Email.trim(),
+    //         password: password.trim(),
+    //         Phone: Phone.trim(),
+    //       });
+    //     }
+    //   } else {
+    //     userData = [];
+    //     userData.push({
+    //       Name: Name.trim(),
+    //       Email: Email.trim(),
+    //       password: password.trim(),
+    //       Phone: Phone.trim(),
+    //     });
+    //   }
+    //   AsyncStorage.setItem("userData", JSON.stringify(userData));
+    //   alert("Đăng ký thành công!");
+    //   navigation.goBack();
+    // };
+    try {
+      const res = await axios.get(
+        `http://192.168.43.132:3000/user/${Email.trim()}`
       );
-      if (arr.length > 0) {
-        alert("Email already registered!");
+      if (res.data.Email == Email.trim()) {
+        alert("Email đã được đăng ký!");
         return;
       } else {
-        userData.push({
+        const res = await axios.post("http://192.168.43.132:3000/user/", {
           Name: Name.trim(),
           Email: Email.trim(),
           password: password.trim(),
           Phone: Phone.trim(),
         });
+        alert("Đăng ký thành công!");
+        navigation.goBack();
       }
-    } else {
-      userData = [];
-      userData.push({
-        Name: Name.trim(),
-        Email: Email.trim(),
-        password: password.trim(),
-        Phone: Phone.trim(),
-      });
+    } catch (error) {
+      console.log(error);
     }
-    AsyncStorage.setItem("userData", JSON.stringify(userData));
-    alert("Đăng ký thành công!");
-    navigation.goBack();
   };
   return (
     <View style={styles.container}>

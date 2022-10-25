@@ -1,4 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { StatusBar } from "expo-status-bar";
+// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// import "react-native-gesture-handler";
+// import { createDrawerNavigator } from "@react-navigation/drawer";
+import Logo from "../src/logo";
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -13,6 +18,31 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Btns from "../src/btn";
+//GHINHO: DRAWERNAVIGATOR: KÉO THANH TỪ GÓC TRÁI MÀN HÌNH SANG PHẢI
+
+// const Drawer = createDrawerNavigator();
+
+// function MyDrawer() {
+//   return (
+//     <Drawer.Navigator>
+//       <Drawer.Screen name="Trang Chủ" component={TrangChu} />
+//       <Drawer.Screen name="Test" component={Test} />
+//       <Drawer.Screen name="Test2" component={Test2} />
+//     </Drawer.Navigator>
+//   );
+// }
+
+//GHINHO: BOTTOMNTAB: THANH DƯỚI MÀN HÌNH
+
+// const Tab = createBottomTabNavigator();
+// function MyTabs() {
+//   return (
+//     <Tab.Navigator>
+//       <Tab.Screen name="Home" component={HomeScreen} />
+//       <Tab.Screen name="Settings" component={SettingsScreen} />
+//     </Tab.Navigator>
+//   );
+// }
 
 export default function HomeScreen({ navigation }) {
   const logOut = async () => {
@@ -24,17 +54,22 @@ export default function HomeScreen({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <Text>Home</Text>
-      <Btns color="#8e64a1" Text="Log Out" onPress={logOut}></Btns>
+      <View style={styles.header}>
+        <Logo></Logo>
+      </View>
+      <View style={styles.middle}></View>
+      <View style={styles.bottom}></View>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "",
+    /* GHINHO: marginTop: StatusBar.currentHeight,  */
     alignItems: "center",
-    flexDirection: "column",
+    justifyContent: "center",
+  },
+  header: {
+    marginTop: 30,
   },
   titleText: {
     fontSize: 40,
